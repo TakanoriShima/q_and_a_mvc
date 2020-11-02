@@ -5,11 +5,57 @@
     $password = '';
     
     // 変数の初期化
+    $id = "";
     $name = "";
     $content = "";
     
-    // 投稿ボタンが押されたならば
+    // GET通信ならば
+    if($_SERVER["REQUEST_METHOD"] === 'GET'){
+        // id値を取得
+        if(isset($_GET['id']) === true){
+            $id = $_GET['id'];
+        }else{ 
+            header('Location: index.php');
+        } 
+        
+        // 例外処理
+        try {
+            
+            // 接続オプション
+            $options = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,        // 失敗したら例外を投げる
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   // デフォルトのフェッチモードは連想配列
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',   // MySQL サーバーへの接続時の文字コード設定
+            ); 
+            
+            // データベースに接続                
+            $pdo = new PDO($dsn, $username, $password, $options);
+
+            // SELECT文を実行して、questionsテーブルのデータ取得
+            $stmt = $pdo->prepare('SELECT * FROM questions WHERE id=:id');
+            // バインド    
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            // 実行
+            $stmt->execute();
+            
+            $question = $stmt->fetch();
+            
+    
+        } catch (PDOException $e) {
+            echo 'PDO exception: ' . $e->getMessage();
+            exit;
+        }
+        
+    }
+ 
+    // 更新ボタンが押されたならば
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        // id値を取得
+        if(isset($_POST['id']) === true){
+            $id = $_POST['id'];
+        }else{ 
+            header('Location: index.php');
+        } 
         // 入力された値を取得
         $name = $_POST['name'];
         $content = $_POST['content'];
@@ -27,16 +73,19 @@
             // データベースに接続                
             $pdo = new PDO($dsn, $username, $password, $options);
 
-            // プリペアドステートメント
-            $stmt = $pdo -> prepare("INSERT INTO questions (name, content) VALUES (:name, :content)");
-            
-            // バインド処理
+            // UPDATE文を 実行して、questionsテーブルのデータを更新
+            $stmt = $pdo->prepare('UPDATE questions SET name=:name, content=:content WHERE id=:id');
+            // バインド    
             $stmt->bindParam(':name', $name, PDO::PARAM_STR);
             $stmt->bindParam(':content', $content, PDO::PARAM_STR);
-            
-            // INSERT文　実行
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            // 実行
             $stmt->execute();
             
+            header('Location: show.php?id=' . $id);
+            exit;
+            
+    
         } catch (PDOException $e) {
             echo 'PDO exception: ' . $e->getMessage();
             exit;
@@ -60,15 +109,16 @@
     <body>
         <div class="container">
             <div class="row mt-2">
-                <h1 class="text-center col-sm-12">質問投稿</h1>
+                <h1 class="text-center col-sm-12 mt-2">id: <?php print $id; ?> の質問編集</h1>
             </div>
             <div class="row mt-2">
-                <form class="col-sm-12" action="new.php" method="POST">
+                <form class="col-sm-12" action="edit.php?id=<?php print $id; ?>" method="POST">
+                    <input type="hidden" name="id" value="<?php print $id; ?>"> 
                     <!-- 1行 -->
                     <div class="form-group row">
                         <label class="col-2 col-form-label">名前</label>
                         <div class="col-10">
-                            <input type="text" class="form-control" name="name" required placeholder="名前を入力してください。">
+                            <input type="text" class="form-control" name="name" value="<?php print $question['name']; ?>" required >
                         </div>
                     </div>
                 
@@ -76,20 +126,20 @@
                     <div class="form-group row">
                         <label class="col-2 col-form-label">質問内容</label>
                         <div class="col-10">
-                            <textarea name="content" class="form-control" required placeholder="質問内容を入力してください。"></textarea>
+                            <textarea name="content" class="form-control" required><?php print $question['content']; ?></textarea>
                         </div>
                     </div>
                 
                     <!-- 1行 -->
                     <div class="form-group row">
                         <div class="offset-2 col-10">
-                            <button type="submit" class="btn btn-primary">投稿</button>
+                            <button type="submit" class="btn btn-primary">更新</button>
                         </div>
                     </div>
                 </form>
             </div>
              <div class="row mt-5">
-                <a href="index.php" class="btn btn-primary">投稿一覧</a>
+                <a href="show.php?id=<?php print $id; ?>" class="btn btn-primary">投稿詳細へ</a>
             </div>
         </div>
         

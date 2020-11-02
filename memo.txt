@@ -25,3 +25,6 @@ name varchar(20) not null,
 content varchar(100) not null,
 created_at timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+データも引き渡せる
+include_once 'xxx.php';
