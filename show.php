@@ -6,14 +6,16 @@
     $password = '';
     
     // 変数の初期化
-    $questions = array();
+    // 注目している質問番号を保存する変数
     $id = "";
+    // 注目している質問を保存する変数
     $question = "";
-    
+
     // id値を取得
     if(isset($_GET['id']) === true){
         $id = $_GET['id'];
     }else{ 
+        // 画面遷移
         header('Location: index.php');
     }   
 
@@ -23,20 +25,21 @@
         // 接続オプション
         $options = array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,        // 失敗したら例外を投げる
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   //デフォルトのフェッチモードはクラス
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   //デフォルトのフェッチモードは連想配列
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',   //MySQL サーバーへの接続時に実行するコマンド
         ); 
         
         // データベースに接続  
         $pdo = new PDO($dsn, $username, $password, $options);
        
-        // SELECT文を実行して、questionsのデータを取得
+        // SELECT文を実行して、questionsのデータを取得する準備
         $stmt = $pdo->prepare('SELECT * FROM questions WHERE id=:id');
-        // バインド    
+        // バインド処理    
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        // 実行
+        // SELECT文実行
         $stmt->execute();
         
+        // 連想配列としてデータを1件抜き出す
         $question = $stmt->fetch();
     
     } catch (PDOException $e) {

@@ -5,6 +5,7 @@
     $password = '';
     
     // 変数の初期化
+    // 質問一覧を保存する配列を定義
     $questions = array();
 
     // 例外処理
@@ -13,14 +14,14 @@
         // 接続オプション
         $options = array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,        // 失敗したら例外を投げる
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   //デフォルトのフェッチモードはクラス
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   //デフォルトのフェッチモードは連想配列
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',   //MySQL サーバーへの接続時に実行するコマンド
         ); 
         
         // データベースに接続  
         $pdo = new PDO($dsn, $username, $password, $options);
        
-        // SELECT文を実行して、questionsテーブルの全データ取得
+        // SELECT文を実行して、questionsテーブルの全データ取得する
         $stmt = $pdo->query('SELECT * FROM questions');
         
         // 連想配列の配列として全データを抜き出す

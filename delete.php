@@ -10,6 +10,7 @@
         if(isset($_GET['id']) === true){
             $id = $_GET['id'];
         }else{ 
+            // 画面遷移
             header('Location: index.php');
         } 
         
@@ -26,13 +27,14 @@
             // データベースに接続                
             $pdo = new PDO($dsn, $username, $password, $options);
 
-            // DELETE文を実行して、questionsテーブルのデータを削除
+            // DELETE文を実行して、questionsテーブルのデータを削除する準備
             $stmt = $pdo->prepare('DELETE FROM questions WHERE id=:id');
-            // バインド    
+            // バインド処理
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            // 実行
+            // DELETE文　実行
             $stmt->execute();
             
+            // 画面遷移
             header('Location: index.php');
             exit;
             

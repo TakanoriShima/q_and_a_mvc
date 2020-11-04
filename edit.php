@@ -5,8 +5,11 @@
     $password = '';
     
     // 変数の初期化
+    // 注目している質問の番号を保存する変数
     $id = "";
+    // 入力された名前を保存する変数
     $name = "";
+    // 入力された質問内容を保存する変数
     $content = "";
     
     // GET通信ならば
@@ -15,6 +18,7 @@
         if(isset($_GET['id']) === true){
             $id = $_GET['id'];
         }else{ 
+            // 画面遷移
             header('Location: index.php');
         } 
         
@@ -31,16 +35,16 @@
             // データベースに接続                
             $pdo = new PDO($dsn, $username, $password, $options);
 
-            // SELECT文を実行して、questionsテーブルのデータ取得
+            // SELECT文を実行して、questionsテーブルのデータ取得する準備
             $stmt = $pdo->prepare('SELECT * FROM questions WHERE id=:id');
-            // バインド    
+            // バインド処理    
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            // 実行
+            // SELECT文　実行
             $stmt->execute();
             
+            // 連想配列としてデータを1件抜き出す
             $question = $stmt->fetch();
             
-    
         } catch (PDOException $e) {
             echo 'PDO exception: ' . $e->getMessage();
             exit;
@@ -54,7 +58,9 @@
         if(isset($_POST['id']) === true){
             $id = $_POST['id'];
         }else{ 
+            // 画面遷移
             header('Location: index.php');
+            exit;
         } 
         // 入力された値を取得
         $name = $_POST['name'];
@@ -75,17 +81,17 @@
 
             // UPDATE文を 実行して、questionsテーブルのデータを更新
             $stmt = $pdo->prepare('UPDATE questions SET name=:name, content=:content WHERE id=:id');
-            // バインド    
+            // バインド処理
             $stmt->bindParam(':name', $name, PDO::PARAM_STR);
             $stmt->bindParam(':content', $content, PDO::PARAM_STR);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             // 実行
             $stmt->execute();
             
-            header('Location: show.php?id=' . $id);
+            // 画面遷移
+            header('Location: index.php');
             exit;
             
-    
         } catch (PDOException $e) {
             echo 'PDO exception: ' . $e->getMessage();
             exit;

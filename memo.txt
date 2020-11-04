@@ -1,14 +1,17 @@
+### 環境設定 -------
+
 # PHP 設定
 php --version
 # PHP 5.6.40 (cli) (built: Oct 31 2019 20:35:16) 
 
-# PDO 設定
+# MySQL 設定
 mysql --version
-#mysql  Ver 14.14 Distrib 5.5.62, for Linux (x86_64) using readline 5.1
+# mysql  Ver 14.14 Distrib 5.5.62, for Linux (x86_64) using readline 5.1
 
 # 日本語設定
 sed -e "/utf8/d" -e "/client/d" -e "/^\[mysqld_safe\]$/i character-set-server=utf8\n\n[client]\ndefault-character-set=utf8" /etc/my.cnf |sudo tee /etc/my.cnf
 
+# PDO設定
 php -m | grep pdo
 # pdo_mysql
 # pdo_sqlite
@@ -16,8 +19,12 @@ php -m | grep pdo
 # pdo_mysql がない場合
 sudo yum -y install php71 php71-mbstring php71-pdo
 
-# MySQL
+### MySQLでデータベースとテーブル構築 --------
+mysql -u root
+
 create database q_and_a character set utf8;
+
+use q_and_a;
 
 create table questions(
 id int primary key auto_increment, 
@@ -26,5 +33,25 @@ content varchar(100) not null,
 created_at timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-データも引き渡せる
-include_once 'xxx.php';
+### アプリの起動 --------------
+1. エキスプローラ内の　index.php ファイルのアイコンを右クリック -> Run
+2. previewメニュー -> preview running application をクリック
+3. previewを最大化
+4. 以下のURLにアクセスする
+   https://xxxxxx.amazonaws.com/q_and_a/index.php
+
+### git の使い方 --------------- 
+# 初回だけ実行し、リモートリポジトリ作成
+git init
+# 以下繰り返し
+git add .
+git commit -m "任意のコミットメッセージ"
+
+### github の使い方
+# githubでリモートリポジトリ作成
+# githubに接続するため、初回だけ実行
+git remote add origin xxxx.git
+git branch -M main
+
+# 以下commit の後繰り返し
+git push -u origin main

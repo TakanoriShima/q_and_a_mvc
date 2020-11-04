@@ -5,7 +5,9 @@
     $password = '';
     
     // 変数の初期化
+    // 入力された名前を保存する変数
     $name = "";
+    // 入力された質問内容を保存する変数
     $content = "";
     
     // 投稿ボタンが押されたならば
@@ -27,7 +29,7 @@
             // データベースに接続                
             $pdo = new PDO($dsn, $username, $password, $options);
 
-            // プリペアドステートメント
+            // INSERT文を実行して新規質問をデータベースに保存する準備
             $stmt = $pdo -> prepare("INSERT INTO questions (name, content) VALUES (:name, :content)");
             
             // バインド処理
@@ -36,6 +38,10 @@
             
             // INSERT文　実行
             $stmt->execute();
+            
+            // 画面遷移
+            header('Location: index.php');
+            exit;
             
         } catch (PDOException $e) {
             echo 'PDO exception: ' . $e->getMessage();
