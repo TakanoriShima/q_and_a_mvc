@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -14,15 +13,15 @@
     <body>
         <div class="container">
             <div class="row mt-2">
-                <h1 class="text-center col-sm-12">質問投稿</h1>
+                <h1 class="text-center col-sm-12 mt-2">id: <?= $question->$id ?> の質問編集</h1>
             </div>
             <div class="row mt-2">
-                <form class="col-sm-12" action="create.php" method="POST">
+                <form class="col-sm-12" action="update.php?id=<?= $question->$id ?>" method="POST">
                     <!-- 1行 -->
                     <div class="form-group row">
                         <label class="col-2 col-form-label">名前</label>
                         <div class="col-10">
-                            <input type="text" class="form-control" name="name" required placeholder="名前を入力してください。">
+                            <input type="text" class="form-control" name="name" value="<?= $question->name ?>" required >
                         </div>
                     </div>
                 
@@ -30,20 +29,20 @@
                     <div class="form-group row">
                         <label class="col-2 col-form-label">質問内容</label>
                         <div class="col-10">
-                            <textarea name="content" class="form-control" required placeholder="質問内容を入力してください。"></textarea>
+                            <textarea name="content" class="form-control" required><?= $question->content ?></textarea>
                         </div>
                     </div>
                 
                     <!-- 1行 -->
                     <div class="form-group row">
                         <div class="offset-2 col-10">
-                            <button type="submit" class="btn btn-primary">投稿</button>
+                            <button type="submit" class="btn btn-primary">更新</button>
                         </div>
                     </div>
                 </form>
             </div>
              <div class="row mt-5">
-                <a href="index.php" class="btn btn-primary">投稿一覧</a>
+                <a href="show.php?id=<?= $question->id ?>" class="btn btn-primary">投稿詳細へ</a>
             </div>
         </div>
         
