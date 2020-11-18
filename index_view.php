@@ -15,13 +15,16 @@
             <div class="row mt-2">
                 <h1 class=" col-sm-12 text-center">質問一覧</h1>
             </div>
+            <?php if(count($questions) !== 0){ ?>
+            <h4><?= count($questions) ?>&nbsp;件</h4>
             <div class="row mt-2">
                 <table class="table table-bordered table-striped">
                     <tr>
-                        <th>ID</th>
+                        <th>質問番号</th>
                         <th>ユーザ名</th>
                         <th>内容</th>
                         <th>投稿時間</th>
+                        <th>回答数</th>
                     </tr>
                     </tr>
                     <!--質問データの埋め込み-->
@@ -31,9 +34,13 @@
                         <td><?= $question->name ?></td>
                         <td><?= $question->content; ?></td>
                         <td><?= $question->created_at ?></td>
+                        <td><?= count($question->get_answers()) ?>&nbsp;件</td>
                     </tr>
                 <?php } ?>
                 </table>
+            <?php }else{ ?>
+                <h2 class="offset-sm-3 col-sm-6 text-center">質問はまだありません。</h2>
+            <?php } ?>
             </div>
             <div class="row mt-5">
                 <a href="new.php" class="btn btn-primary">新規質問投稿</a>
