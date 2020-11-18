@@ -70,19 +70,16 @@ class QuestionDAO{
     public static function update($question){
         $pdo = self::get_connection();
         // UPDATE文の実行準備
-        $stmt = $pdo->prepare('UPDATE questions SET name=:name, content=:content WHERE id = :id');
+        $stmt = $pdo->prepare('UPDATE questions SET name=:name, content=:content WHERE id=:id');
         // バインド処理                
         $stmt->bindParam(':name', $question->name, PDO::PARAM_STR);
         $stmt->bindParam(':content', $question->content, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $question->id, PDO::PARAM_INT);
         
         // UPDATE文本番実行
         $stmt->execute();
         self::close_connection($pdo, $stmp);
-        
-        // 画像の物理削除
-        if($image !== $message->image){
-            unlink(IMAGE_DIR . $image);
-        }
+    
     }
     
     // questionデータを削除するメソッド

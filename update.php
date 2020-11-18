@@ -2,6 +2,14 @@
 
     // 外部ファイルの読み込み
     require_once 'QuestionDAO.php';
+    
+    // 変数の初期化
+    // 変更するquestionのID
+    $id = "";
+    // 入力された名前を保存する変数
+    $name = "";
+    // 入力された質問内容を保存する変数
+    $content = "";
 
     // 更新ボタンが押されたならば
     if($_SERVER['REQUEST_METHOD'] === 'POST'){

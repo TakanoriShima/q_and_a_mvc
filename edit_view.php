@@ -13,10 +13,10 @@
     <body>
         <div class="container">
             <div class="row mt-2">
-                <h1 class="text-center col-sm-12 mt-2">id: <?= $question->$id ?> の質問編集</h1>
+                <h1 class="text-center col-sm-12 mt-2">id: <?= $question->id ?> の質問編集</h1>
             </div>
             <div class="row mt-2">
-                <form class="col-sm-12" action="update.php?id=<?= $question->$id ?>" method="POST">
+                <form class="col-sm-12" action="update.php" method="POST">
                     <!-- 1行 -->
                     <div class="form-group row">
                         <label class="col-2 col-form-label">名前</label>
@@ -33,6 +33,7 @@
                         </div>
                     </div>
                 
+                    <input type="hidden" name="id" value="<?= $question->id ?>">
                     <!-- 1行 -->
                     <div class="form-group row">
                         <div class="offset-2 col-10">

@@ -1,7 +1,7 @@
 <?php
 
     // 外部ファイルの読み込み
-    require_once 'QUestionDAO.php';
+    require_once 'QuestionDAO.php';
     
     // 変数の初期化
     // 注目している質問番号を保存する変数
