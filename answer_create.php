@@ -14,7 +14,7 @@
     
     // 投稿ボタンが押されたならば
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        var_dump($_POST);
+
         // 入力された値を取得
         $question_id = $_POST['question_id'];
         $name = $_POST['name'];
